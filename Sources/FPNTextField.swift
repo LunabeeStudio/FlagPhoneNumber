@@ -285,7 +285,10 @@ open class FPNTextField: UITextField, FPNCountryPickerDelegate, FPNDelegate {
 			if let validPhoneNumber = getValidNumber(phoneNumber: cleanedPhoneNumber) {
 				nbPhoneNumber = validPhoneNumber
 
-				cleanedPhoneNumber = "+\(validPhoneNumber.countryCode.stringValue)\(validPhoneNumber.nationalNumber.stringValue)"
+                cleanedPhoneNumber = "+"
+                + validPhoneNumber.countryCode.stringValue
+                + (validPhoneNumber.italianLeadingZero ? "0" : "")
+                + validPhoneNumber.nationalNumber.stringValue
 
 				if let inputString = formatter?.inputString(cleanedPhoneNumber) {
 					text = remove(dialCode: phoneCode, in: inputString)
