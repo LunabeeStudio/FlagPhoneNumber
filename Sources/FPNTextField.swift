@@ -95,6 +95,11 @@ open class FPNTextField: UITextField, FPNCountryPickerDelegate, FPNDelegate {
 		parentViewController = nil
 	}
 
+    public func prepareForReuse() {
+        resetCountryPicker()
+        text = nil
+    }
+
 	private func setup() {
 		leftViewMode = .always
 
@@ -154,17 +159,21 @@ open class FPNTextField: UITextField, FPNCountryPickerDelegate, FPNDelegate {
 		return newRect
 	}
 
-	private func setupCountryPicker() {
-		countryPicker.countryPickerDelegate = self
-		countryPicker.showPhoneNumbers = true
-		countryPicker.backgroundColor = .white
+    private func setupCountryPicker() {
+        countryPicker.countryPickerDelegate = self
+        countryPicker.showPhoneNumbers = true
+        countryPicker.backgroundColor = .white
 
-		if let regionCode = Locale.current.regionCode, let countryCode = FPNCountryCode(rawValue: regionCode) {
-			countryPicker.setCountry(countryCode)
-		} else if let firstCountry = countryPicker.countries.first {
-			countryPicker.setCountry(firstCountry.code)
-		}
-	}
+        resetCountryPicker()
+    }
+
+    private func resetCountryPicker() {
+        if let regionCode = Locale.current.regionCode, let countryCode = FPNCountryCode(rawValue: regionCode) {
+            countryPicker.setCountry(countryCode)
+        } else if let firstCountry = countryPicker.countries.first {
+            countryPicker.setCountry(firstCountry.code)
+        }
+    }
 
 	@objc open func displayNumberKeyBoard() {
 		inputView = nil
